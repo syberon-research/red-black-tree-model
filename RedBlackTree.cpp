@@ -170,17 +170,16 @@ void RedBlackTree::FixInsert(RBTNode* node) {
 
 // Insert a new integer into the tree.
 void RedBlackTree::Insert(int value) {
-    if (Contains(value)) {
-        throw invalid_argument("Duplicate values are not allowed.");
-    }
-
-    RBTNode* newNode = new RBTNode(value);
-
     RBTNode* parent = nullptr;
     RBTNode* current = root;
 
+    // Find the insertion position and check for duplicates.
     while (current != nullptr) {
         parent = current;
+
+        if (value == current->data) {
+            throw invalid_argument("Duplicate value");
+        }
 
         if (value < current->data) {
             current = current->left;
@@ -189,6 +188,8 @@ void RedBlackTree::Insert(int value) {
         }
     }
 
+    // Create and attach the new node.
+    RBTNode* newNode = new RBTNode(value);
     newNode->parent = parent;
 
     if (parent == nullptr) {
@@ -200,7 +201,6 @@ void RedBlackTree::Insert(int value) {
     }
 
     numItems++;
-
     FixInsert(newNode);
 }
 
